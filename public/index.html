@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Job Form</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@pipedrive/app-extensions-sdk@0/dist/index.umd.js"></script>
+</head>
+
+<body>
+    <form id="form" class="form" id="client" action="" method="post">
+        <div class="card-row">
+            <div class="card">
+                <h2 class="card-name">Client details</h2>
+                <div class="input-list">
+                    <div class="input-row">
+                        <input class="input-row__item" type="text" name="firstname" id="firstname"
+                            placeholder="First name" value="John" required />
+                        <input type="text" name="lastname" id="lastname" placeholder="Last name" value="Johnson"
+                            required />
+                    </div>
+                    <input type="text" name="phone" id="phone" placeholder="Phone" value="+777777777777" required />
+                    <input type="email" name="email" id="email" placeholder="Email (optional)"
+                        value="example@gmail.com" />
+                </div>
+            </div>
+
+            <div class="card">
+                <h2 class="card-name">Job details</h2>
+                <div class="input-list">
+                    <div class="input-row">
+                        <select class="input-row__item" name="job-type" id="job-type" required>
+                            <option label="Job type" hidden></option>
+                            <option value="art">Art</option>
+                            <option value="science" selected>Science</option>
+                            <option value="sport">Sport</option>
+                        </select>
+                        <select name="job-source" id="job-source" required>
+                            <option label="Job source" hidden></option>
+                            <option value="linkedin" selected>LinkedIn</option>
+                            <option value="headhunter">HeadHunter</option>
+                            <option value="google-for-jobs">Google for Jobs</option>
+                        </select>
+                    </div>
+                    <textarea rows="5" name="job-description" id="job-description"
+                        placeholder="Job job-description (optional)"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="card-row">
+            <div class="card">
+                <h2 class="card-name">Service location</h2>
+                <div class="input-list">
+                    <input type="text" name="address" id="address" placeholder="Address"
+                        value="USA, New York, Wall Street" required />
+                    <input type="text" name="city" id="city" placeholder="City" value="New York" required />
+                    <input type="text" name="state" id="state" placeholder="State" value="New York" required />
+                    <div class="input-row">
+                        <input class="input-row__item" type="text" name="zip-code" id="zip-code" placeholder="Zip code"
+                            value="111111" required />
+                        <select name="area" required>
+                            <option label="Area" hidden></option>
+                            <option value="northeast">Northeast</option>
+                            <option value="midwest" selected>Midwest</option>
+                            <option value="midwest">South</option>
+                            <option value="midwest">West</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2 class="card-name">Scheduled</h2>
+                <div class="input-list">
+                    <input type="date" name="date" id="date" placeholder="Start date" value="01.01.2025" required />
+                    <div class="input-row">
+                        <select class="input-row__item" name="start-time" id="start-time" required>
+                            <option label="Start time" hidden></option>
+                            <option value="8:00" selected>8:00</option>
+                            <option value="9:00">9:00</option>
+                            <option value="10:00">10:00</option>
+                        </select>
+                        <select name="end-time" id="end-time" required>
+                            <option label="End time" hidden></option>
+                            <option value="17:00" selected>17:00</option>
+                            <option value="18:00">18:00</option>
+                            <option value="19:00">19:00</option>
+                        </select>
+                    </div>
+                    <select name="responsible" id="responsible" required>
+                        <option label="Test select" hidden></option>
+                        <option value="ivan-ivanov" selected>Ivan Ivanov</option>
+                        <option value="petr-petrov">Petr Petrov</option>
+                        <option value="nazar-nazarov">Nazar Nazarov</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="btn-container">
+            <button id="submit-btn" type="submit" class="form__btn btn-create">
+                Create job
+            </button>
+            <button class="form__btn btn-save">Save info</button>
+        </div>
+    </form>
+
+    <script>
+        function getProperty(key) {
+            const query = String(document.location.href).split("?");
+            if (query[1]) {
+                const part = query[1].split("&");
+                for (i = 0; i < part.length; i++) {
+                    var data = part[i].split("=");
+                    if (data[0] == key && data[1]) return data[1];
+                }
+            }
+            return "";
+        }
+        const idForSDK = getProperty("id");
+        console.log("create.html - idForSDK: ", idForSDK);
+        document.addEventListener("DOMContentLoaded", async function () {
+            try {
+                const idForSDK = getProperty("id");
+                console.log(idForSDK);
+                const sdk = await new AppExtensionsSDK({
+                    identifier: idForSDK,
+                }).initialize({});
+                await sdk.execute(AppExtensionsSDK.Command.RESIZE, {
+                    width: 1200,
+                    height: 735,
+                });
+                console.log("SDK Initialized and resized");
+                try {
+                    console.log("start open modal!");
+                    await sdk.execute(AppExtensionsSDK.Command.OPEN_MODAL, {
+                        type: AppExtensionsSDK.Modal.CUSTOM_MODAL,
+                    });
+                    console.log("end open modal");
+                    no;
+                } catch (error) {
+                    console.error("Error opening modal:", error);
+                }
+            } catch (error) {
+                console.error("Error initializing SDK:", error);
+            }
+        });
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>
